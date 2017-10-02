@@ -21,7 +21,6 @@
  */
 
 module.exports.routes = {
-
   /***************************************************************************
   *                                                                          *
   * Make the view located at `views/homepage.ejs` (or `views/homepage.jade`, *
@@ -32,9 +31,11 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/': {
-    view: 'homepage'
-  }
+  "/": {
+    view: "homepage"
+  },
+
+  "GET /api/detail/:type/:objectId/:metric": "DetailController.get"
 
   /***************************************************************************
   *                                                                          *
@@ -45,5 +46,4 @@ module.exports.routes = {
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
-
 };
