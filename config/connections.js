@@ -20,7 +20,6 @@
  */
 
 module.exports.connections = {
-
   /***************************************************************************
    *                                                                          *
    * Local disk storage for DEVELOPMENT ONLY                                  *
@@ -29,7 +28,7 @@ module.exports.connections = {
    *                                                                          *
    ***************************************************************************/
   localDiskDb: {
-    adapter: 'sails-disk'
+    adapter: "sails-disk"
   },
 
   /***************************************************************************
@@ -57,13 +56,13 @@ module.exports.connections = {
    *                                                                          *
    ***************************************************************************/
   neon: {
-    adapter: 'sails-mongo',
-    host: '52.28.116.99',
-    port: 27017,
+    adapter: "sails-mongo",
+    host: "18.194.158.74",
+    port: 27018,
     //user: 'username', //optional
     //password: 'password', //optional
-    database: 'neon' //optional
-  },
+    database: "neon" //optional
+  }
 
   /***************************************************************************
    *                                                                          *
@@ -82,11 +81,9 @@ module.exports.connections = {
   //   database: 'YOUR_POSTGRES_DB' //optional
   // }
 
-
   /***************************************************************************
    *                                                                          *
    * More adapters: https://github.com/balderdashy/sails                      *
    *                                                                          *
    ***************************************************************************/
-
 };

@@ -33,14 +33,18 @@ module.exports = {
         });
       });
     })
+      //.then(collection => collection.sort((c1, c2) => c1[metric][0].total_count - c2[metric][0].total_count))
+      .then(collection => collection.sort((c1, c2) => moment(c1.created_at).diff(moment(c2.created_at))))
       .then(collection => {
+        const startmoment = moment(collection[0].created_at);
         return {
           objectId: collection[0][metric][0].objectId,
           data: collection.map(el => {
             const { total_count } = el[metric][0];
             let newel = Object.assign(el, { total_count });
             delete newel[metric];
-            newel.created_at = moment(el.created_at).format("YYYY.MM.DD_HHmm");
+            newel.created_at_label = moment(el.created_at).format("YYYY/MM/DD HH:mm");
+            newel.fromTheFirst = moment(el.created_at).diff(startmoment, "minutes");
             return newel;
           })
         };
