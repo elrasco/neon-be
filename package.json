@@ -21,6 +21,7 @@
     "grunt-sails-linker": "~0.10.1",
     "grunt-sync": "0.5.2",
     "include-all": "^1.0.0",
+    "moment": "^2.18.1",
     "rc": "1.0.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
@@ -38,5 +39,6 @@
     "url": "git://github.com/luca/neon.git"
   },
   "author": "luca",
-  "license": ""
+  "license": "",
+  "devDependencies": {}
 }
