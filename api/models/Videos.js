@@ -16,6 +16,8 @@ module.exports = {
     description: "string",
     title: "string",
     picture: "string",
+    content_category: "string",
+    length: "double",
     page: {
       columnName: "page_id",
       model: "pages"

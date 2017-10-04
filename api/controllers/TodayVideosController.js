@@ -6,6 +6,9 @@
  */
 
 module.exports = {
-	
+  findByPage: (req, res) => {
+    PostHelper.findPostByPage(req.params.page_id, { limit: req.query.limit }).then(response => {
+      res.send(response);
+    });
+  }
 };
-
