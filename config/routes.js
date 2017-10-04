@@ -36,7 +36,14 @@ module.exports.routes = {
   },
 
   "GET /api/detail/:type/:objectId/:metric": "DetailController.get",
-  "GET /api/todayVideos/byPage/:page_id": "TodayVideosController.findByPage"
+  "GET /api/todayVideos/byPage/:page_id": "TodayVideosController.findByPage",
+  "GET /api/todayPosts/byPage/:page_id": "TodayVideosController.findByPage",
+  "GET /api/yesterdayVideos/byPage/:page_id": "YesterdayVideosController.findByPage",
+  "GET /api/yesterdayPost/byPage/:page_id": "YesterdayVideosController.findByPage",
+  "GET /api/sevenDVideos/byPage/:page_id": "SevenDVideosController.findByPage",
+  "GET /api/sevenDPost/byPage/:page_id": "SevenDVideosController.findByPage",
+  "GET /api/thirtyDVideos/byPage/:page_id": "ThirtyDVideosController.findByPage",
+  "GET /api/thirtyDPost/byPage/:page_id": "ThirtyDVideosController.findByPage"
 
   /***************************************************************************
   *                                                                          *

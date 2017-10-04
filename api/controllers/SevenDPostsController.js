@@ -6,10 +6,9 @@
  */
 
 module.exports = {
-  /*   find: (req, res) => {
-      SevenDPosts.find().populate('post')
-        .then(result => {
-          res.send(result);
-        });
-    } */
+  findByPage: (req, res) => {
+    PostHelper.findPostByPage(req.params.page_id, { when: "7d", type: "post", limit: req.query.limit }).then(response => {
+      res.send(response);
+    });
+  }
 };

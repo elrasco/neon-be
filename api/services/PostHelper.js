@@ -2,6 +2,7 @@ module.exports = {
   findPostByPage: (page_id, { type = "video", when = "today", limit = -1 }) => {
     return new Promise((res, rej) => {
       let model = type === "post" ? Posts : Videos;
+      console.log(model.tableName);
       let modelName = model.identity[0].toUpperCase() + model.identity.substring(1);
       model.native((err, collection) => {
         const $match = { page_id };
