@@ -5,7 +5,7 @@ module.exports = {
       console.log(model.tableName);
       let modelName = model.identity[0].toUpperCase() + model.identity.substring(1);
       model.native((err, collection) => {
-        const $match = { page_id };
+        const $match = { page_id: { $in: page_id.split(",") } };
         const $lookup = {
           from: when + modelName,
           localField: "objectId",
@@ -26,7 +26,8 @@ module.exports = {
             length: "$length",
             created_time: "$created_time",
             content_category: "$content_category",
-            objectId: "$objectId"
+            objectId: "$objectId",
+            page_id: "$page_id"
           },
           post: {
             description: "$description",
@@ -34,7 +35,8 @@ module.exports = {
             picture: "$picture",
             type: "$type",
             created_time: "$created_time",
-            objectId: "$objectId"
+            objectId: "$objectId",
+            page_id: "$page_id"
           }
         };
 
