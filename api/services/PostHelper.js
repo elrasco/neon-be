@@ -1,10 +1,9 @@
 module.exports = {
-  findPostByPages: (page_id, { type = "video", when = "today", limit = -1 }) => {
+  findPostByPages: (page_id, { type = "video", when = "today", limit = 200 }) => {
     return new Promise((res, rej) => {
       let model = type === "post" ? Posts : Videos;
       let modelName = model.identity[0].toUpperCase() + model.identity.substring(1);
       model.native((err, collection) => {
-        const $match = { page_id: { $in: page_id.split(",") } };
         const $lookup = {
           from: when + modelName,
           localField: "objectId",
@@ -44,7 +43,13 @@ module.exports = {
         } else {
           delete $project.post;
         }
-        let pipeline = [{ $match }, { $lookup }, { $project }, { $sort: { diff: -1 } }];
+
+        let pipeline = [{ $lookup }, { $project }, { $sort: { diff: -1 } }];
+
+        if (page_id) {
+          const $match = { page_id: { $in: page_id.split(",") } };
+          pipeline.unshift({ $match });
+        }
 
         if (limit > 0) {
           pipeline.push({ $limit: parseInt(limit) });
@@ -58,6 +63,6 @@ module.exports = {
           }
         });
       });
-    });
+    }).then(posts => posts.filter(p => p.diff));
   }
 };
