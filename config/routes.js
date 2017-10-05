@@ -39,11 +39,11 @@ module.exports.routes = {
   "GET /api/todayVideos/byPages/:page_id": "TodayVideosController.findByPages",
   "GET /api/todayPosts/byPages/:page_id": "TodayVideosController.findByPages",
   "GET /api/yesterdayVideos/byPages/:page_id": "YesterdayVideosController.findByPages",
-  "GET /api/yesterdayPost/byPages/:page_id": "YesterdayVideosController.findByPages",
+  "GET /api/yesterdayPosts/byPages/:page_id": "YesterdayPostsController.findByPages",
   "GET /api/sevenDVideos/byPages/:page_id": "SevenDVideosController.findByPages",
-  "GET /api/sevenDPost/byPages/:page_id": "SevenDVideosController.findByPages",
+  "GET /api/sevenDPosts/byPages/:page_id": "SevenDPostsController.findByPages",
   "GET /api/thirtyDVideos/byPages/:page_id": "ThirtyDVideosController.findByPages",
-  "GET /api/thirtyDPost/byPages/:page_id": "ThirtyDVideosController.findByPages"
+  "GET /api/thirtyDPosts/byPages/:page_id": "ThirtyDPostsController.findByPages"
 
   /***************************************************************************
   *                                                                          *

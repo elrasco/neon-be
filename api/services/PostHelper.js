@@ -1,13 +1,14 @@
+const getModel = (when, type) => {
+  let tableName = when + type[0].toUpperCase() + type.substring(1) + "s";
+
+  let identity = Object.keys(sails.models).find(identity => sails.models[identity].tableName === tableName);
+  return sails.models[identity];
+};
+
 module.exports = {
-  findPostByPages2: (page_id, { type = "video", when = "today", limit = 200 }) => {
+  findPostByPages2: (page_ids, { type = "video", when = "today", limit = 200 }) => {
     return new Promise((res, rej) => {
-      let tableName = when + type[0].toUpperCase() + type.substring(1) + "s";
-      let model;
-
-      let identity = Object.keys(sails.models).find(identity => sails.models[identity].tableName === tableName);
-      model = sails.models[identity];
-
-      model.native((err, collection) => {
+      getModel(when, type).native((err, collection) => {
         const $lookup = {
           from: type + "s",
           localField: "objectId",
@@ -32,9 +33,9 @@ module.exports = {
 
         let pipeline = [{ $lookup }, { $project }];
 
-        if (page_id) {
-          const $match = { page_id: { $in: page_id.split(",") } };
-          pipeline.unshift({ $match });
+        if (page_ids) {
+          const $match = { "post.page_id": { $in: page_ids.split(",") } };
+          pipeline.push({ $match });
         }
 
         if (limit > 0) {
@@ -111,14 +112,10 @@ module.exports = {
           pipeline.push({ $limit: parseInt(limit) });
         }
 
-        const before = new Date().getTime();
-
         collection.aggregate(pipeline, function(err, response) {
           if (err) {
             rej(err);
           } else {
-            const after = new Date().getTime();
-            console.log(after - before);
             res(response);
           }
         });
