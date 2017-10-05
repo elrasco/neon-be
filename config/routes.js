@@ -37,7 +37,7 @@ module.exports.routes = {
 
   "GET /api/detail/:type/:objectId/:metric": "DetailController.get",
   "GET /api/todayVideos/byPages/:page_id": "TodayVideosController.findByPages",
-  "GET /api/todayPosts/byPages/:page_id": "TodayVideosController.findByPages",
+  "GET /api/todayPosts/byPages/:page_id": "TodayPostsController.findByPages",
   "GET /api/yesterdayVideos/byPages/:page_id": "YesterdayVideosController.findByPages",
   "GET /api/yesterdayPosts/byPages/:page_id": "YesterdayPostsController.findByPages",
   "GET /api/sevenDVideos/byPages/:page_id": "SevenDVideosController.findByPages",
