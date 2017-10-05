@@ -1,4 +1,60 @@
 module.exports = {
+  findPostByPages2: (page_id, { type = "video", when = "today", limit = 200 }) => {
+    return new Promise((res, rej) => {
+      let tableName = when + type[0].toUpperCase() + type.substring(1) + "s";
+      let model;
+
+      let identity = Object.keys(sails.models).find(identity => sails.models[identity].tableName === tableName);
+      model = sails.models[identity];
+
+      model.native((err, collection) => {
+        const $lookup = {
+          from: type + "s",
+          localField: "objectId",
+          foreignField: "objectId",
+          as: type
+        };
+
+        const $project = {
+          _id: 0,
+          diff: 1,
+          total_count: 1,
+          objectId: 1,
+          video: { $arrayElemAt: ["$video", 0] },
+          post: { $arrayElemAt: ["$post", 0] }
+        };
+
+        if (type === "post") {
+          delete $project.video;
+        } else {
+          delete $project.post;
+        }
+
+        let pipeline = [{ $lookup }, { $project }];
+
+        if (page_id) {
+          const $match = { page_id: { $in: page_id.split(",") } };
+          pipeline.unshift({ $match });
+        }
+
+        if (limit > 0) {
+          pipeline.push({ $limit: parseInt(limit) });
+        }
+
+        const before = new Date().getTime();
+
+        collection.aggregate(pipeline, function(err, response) {
+          if (err) {
+            rej(err);
+          } else {
+            const after = new Date().getTime();
+            console.log(after - before);
+            res(response);
+          }
+        });
+      });
+    });
+  },
   findPostByPages: (page_id, { type = "video", when = "today", limit = 200 }) => {
     return new Promise((res, rej) => {
       let model = type === "post" ? Posts : Videos;
@@ -55,14 +111,18 @@ module.exports = {
           pipeline.push({ $limit: parseInt(limit) });
         }
 
+        const before = new Date().getTime();
+
         collection.aggregate(pipeline, function(err, response) {
           if (err) {
             rej(err);
           } else {
+            const after = new Date().getTime();
+            console.log(after - before);
             res(response);
           }
         });
       });
-    }).then(posts => posts.filter(p => p.diff));
+    });
   }
 };

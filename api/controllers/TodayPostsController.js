@@ -10,10 +10,5 @@ module.exports = {
     PostHelper.findPostByPages(req.params.page_id, { type: "post", limit: req.query.limit }).then(response => {
       res.send(response);
     });
-  },
-  find: (req, res) => {
-    PostHelper.findPostByPages(null, { type: "post", limit: req.query.limit }).then(response => {
-      res.send(response);
-    });
   }
 };
