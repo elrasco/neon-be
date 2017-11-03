@@ -10,8 +10,18 @@
  */
 
 module.exports.bootstrap = function(cb) {
-
   // It's very important to trigger this callback method when you are finished
   // with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
-  cb();
+
+  Pages.find().then(pages => {
+    console.log(sails);
+    sails.application = { pages };
+    cb();
+  });
+
+  setInterval(() => {
+    Pages.find().then(pages => {
+      sails.application = { pages };
+    });
+  }, 1000 * 60 * 60 * 24);
 };

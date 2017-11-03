@@ -10,5 +10,10 @@ module.exports = {
     PostHelper.findPostByPages(req.params.page_id, { limit: req.query.limit }).then(response => {
       res.send(response);
     });
+  },
+  find: (req, res) => {
+    TodayVideos.find()
+      .limit(req.query.limit)
+      .then(videos => res.send(videos));
   }
 };
