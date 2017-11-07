@@ -6,14 +6,9 @@
  */
 
 module.exports = {
-  findByPages: (req, res) => {
-    PostHelper.findPostByPages(req.params.page_id, { limit: req.query.limit }).then(response => {
+  findByPages: (req, res) =>
+    VideosHelper.find({ limit: req.query.limit, pages: req.params.page_id }).then(response => {
       res.send(response);
-    });
-  },
-  find: (req, res) => {
-    TodayVideos.find()
-      .limit(req.query.limit)
-      .then(videos => res.send(videos));
-  }
+    }),
+  find: (req, res) => VideosHelper.find({ limit: req.query.limit, when: "today" }).then(videos => res.send(videos))
 };
