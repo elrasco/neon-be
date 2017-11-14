@@ -4,55 +4,67 @@ const getModel = (when, type) => {
   let identity = Object.keys(sails.models).find(identity => sails.models[identity].tableName === tableName);
   return sails.models[identity];
 };
-const $pages$lookup = {
-  from: "pages",
-  localField: "page_id",
-  foreignField: "objectId",
-  as: "page"
-};
+
 const $match_gt = $gt => {
-  return { diff: { $gt } };
+  return { reactions_diff: { $gt } };
 };
-const $posts$lookup = {
-  from: "posts",
-  localField: "objectId",
-  foreignField: "objectId",
-  as: "post"
+
+const $lookup = from => {
+  return {
+    from,
+    localField: "objectId",
+    foreignField: "objectId",
+    as: from.slice(0, -1)
+  };
 };
-const $findProject = {
-  _id: 0,
-  objectId: 1,
-  post: { $arrayElemAt: ["$post", 0] },
-  diff_normalized: {
+
+const normalize = (reaction_type, metric, weight = 1.5) => {
+  return {
     $let: {
       vars: {
-        pow: { $pow: [{ $arrayElemAt: ["$page.fan_count", 0] }, 1.5] }
+        pow: { $pow: ["$page_fan_count", weight] }
       },
-      in: { $multiply: [{ $divide: ["$diff", "$$pow"] }, 10000] }
+      in: { $multiply: [{ $divide: [`$${reaction_type}s_${metric}`, "$$pow"] }, 10000] }
     }
-  },
-  total_count_normalized: {
-    $let: {
-      vars: {
-        pow: { $pow: [{ $arrayElemAt: ["$page.fan_count", 0] }, 1.5] }
-      },
-      in: { $multiply: [{ $divide: ["$total_count", "$$pow"] }, 10000] }
-    }
-  },
-  total_count: 1,
-  diff: 1,
-  page_fan: { $arrayElemAt: ["$page.fan_count", 0] },
-  page_id: 1
+  };
 };
-const $sort = {
-  diff_normalized: -1
+const $project = weight => {
+  return {
+    _id: 0,
+    objectId: 1,
+    post: { $arrayElemAt: ["$post", 0] },
+    reactions_total_count: 1,
+    reactions_total_count_normalized: normalize("reaction", "total_count", weight),
+    reactions_diff: 1,
+    reactions_diff_normalized: normalize("reaction", "diff", weight),
+    comments_total_count: 1,
+    comments_total_count_normalized: normalize("comment", "total_count", weight),
+    comments_diff: 1,
+    comments_diff_normalized: normalize("comment", "diff", weight),
+    likes_total_count: 1,
+    likes_total_count_normalized: normalize("like", "total_count", weight),
+    likes_diff: 1,
+    likes_diff_normalized: normalize("like", "diff", weight),
+    shares_total_count: 1,
+    shares_total_count_normalized: normalize("share", "total_count", weight),
+    shares_diff: 1,
+    shares_diff_normalized: normalize("share", "diff", weight),
+    page_fan: "$page_fan_count",
+    page_fan_count: 1,
+    page_id: 1
+  };
+};
+const $sort = field => {
+  let jsonData = {};
+  jsonData[field] = -1;
+  return jsonData;
 };
 
 module.exports = {
-  find: ({ limit = 200, when = "today", pages = false, min_diff = 10 }) => {
+  find: ({ limit = 200, when = "today", pages = false, min_diff = 0, sort = "shares_diff_normalized", w = 1.5 }) => {
     return new Promise((res, rej) => {
       getModel(when, "post").native((err, collection) => {
-        let pipeline = [{ $match: $match_gt(min_diff) }, { $lookup: $pages$lookup }, { $lookup: $posts$lookup }, { $project: $findProject }, { $sort }];
+        let pipeline = [{ $match: $match_gt(min_diff) }, { $lookup: $lookup("posts") }, { $project: $project(w) }, { $sort: $sort(sort) }];
         if (limit > 0) {
           pipeline.push({ $limit: parseInt(limit) });
         }

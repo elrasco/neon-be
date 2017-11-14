@@ -57,8 +57,10 @@ module.exports.connections = {
    ***************************************************************************/
   neon: {
     adapter: "sails-mongo",
-    host: "52.58.109.69",
-    port: 27018,
+    //host: "52.58.109.69",
+    host: "192.168.0.209",
+    //port: 27018,
+    port: 27017,
     //user: 'username', //optional
     //password: 'password', //optional
     database: "neon" //optional
