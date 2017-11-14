@@ -12,12 +12,12 @@ const $match_gt = ($gt, sort) => {
 
   return jsonData;
 };
-const $lookup = from => {
+const $lookup = ({ from, localField = "objectId", foreignField = "objectId", as }) => {
   return {
     from,
-    localField: "objectId",
-    foreignField: "objectId",
-    as: from.slice(0, -1)
+    localField,
+    foreignField,
+    as: as || from.slice(0, -1)
   };
 };
 
@@ -55,7 +55,8 @@ const $project = weight => {
     shares_diff_normalized: normalize("share", "diff", weight),
     page_fan: "$page_fan_count",
     page_fan_count: 1,
-    page_id: 1
+    page_id: 1,
+    analysys: { $arrayElemAt: ["$prediction.status", 0] }
   };
 };
 
@@ -69,7 +70,13 @@ module.exports = {
   find: ({ limit = 200, when = "today", pages = false, min_diff = 0, sort = "shares_diff_normalized", w = 1.5 }) => {
     return new Promise((res, rej) => {
       getModel(when, "video").native((err, collection) => {
-        let pipeline = [{ $match: $match_gt(min_diff, sort) }, { $lookup: $lookup("videos") }, { $project: $project(w) }, { $sort: $sort(sort) }];
+        let pipeline = [
+          { $match: $match_gt(min_diff, sort) },
+          { $lookup: $lookup({ from: "videos" }) },
+          { $lookup: $lookup({ from: "predictions", foreignField: "video_id" }) },
+          { $project: $project(w) },
+          { $sort: $sort(sort) }
+        ];
         if (limit > 0) {
           pipeline.push({ $limit: parseInt(limit) });
         }

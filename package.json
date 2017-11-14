@@ -5,6 +5,7 @@
   "description": "a Sails application",
   "keywords": [],
   "dependencies": {
+    "aws-sdk": "^2.149.0",
     "babel-preset-env": "^1.6.0",
     "ejs": "2.3.4",
     "express-react-views": "^0.10.2",
