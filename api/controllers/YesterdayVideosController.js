@@ -7,8 +7,8 @@
 
 module.exports = {
   findByPages: (req, res) =>
-    VideosHelper.find({ limit: req.query.limit, pages: req.params.page_id, when: "yesterday", min_diff: 20, sort: req.query.sort, w: req.query.w }).then(response =>
+    VideosHelper.find({ limit: req.query.limit, pages: req.params.page_id, when: "yesterday", min_diff: 50, sort: req.query.sort, w: req.query.w }).then(response =>
       res.send(response)
     ),
-  find: (req, res) => VideosHelper.find({ limit: req.query.limit, when: "yesterday", min_diff: 20, sort: req.query.sort, w: req.query.w }).then(videos => res.send(videos))
+  find: (req, res) => VideosHelper.find({ limit: req.query.limit, when: "yesterday", min_diff: 50, sort: req.query.sort, w: req.query.w }).then(videos => res.send(videos))
 };
