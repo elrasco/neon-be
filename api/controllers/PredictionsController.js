@@ -34,6 +34,7 @@ module.exports = {
     });
   },
   getByVideoId: (req, res) => {
+    const { video_id } = req.params;
     Predictions.findOne({ where: { video_id } }).then(prediction => {
       res.send(prediction);
     });
