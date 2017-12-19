@@ -7,13 +7,9 @@
 
 module.exports = {
   addPage: (req, res) => {
-    console.log(req.body);
-    const { objectId, fan_count, name } = req.body;
-    return Pages.insert({ objectId, fan_count, name }).then(res.send);
-  },
-  all: (req, res) => {
-    Pages.find().then(aaa => {
-      return res.send({});
-    });
+    const url = req.body.pageUrl;
+    const splittedUrl = url.split("/");
+    if (url.startsWith("http") && splittedUrl.length >= 3) alias = splittedUrl[3];
+    return Pages.create({ objectId: alias }).then(res.ok);
   }
 };
