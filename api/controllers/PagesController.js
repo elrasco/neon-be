@@ -8,8 +8,11 @@
 module.exports = {
   addPage: (req, res) => {
     const url = req.body.pageUrl;
-    const splittedUrl = url.split("/");
-    if (url.startsWith("http") && splittedUrl.length >= 3) alias = splittedUrl[3];
-    return Pages.create({ objectId: alias }).then(res.ok);
+    const aliasOrId = url.split("/")[3];
+    const splittedAlias = aliasOrId.split("-");
+    const isId = splittedAlias.length > 0;
+    let objectId = isId ? splittedAlias[splittedAlias.length - 1] : (objectId = aliasOrId);
+
+    return Pages.create({ objectId }).then(res.ok);
   }
 };
