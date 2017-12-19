@@ -6,9 +6,7 @@
  */
 
 module.exports = {
-  findByPages: (req, res) => {
-    PostHelper.findPostByPages(req.params.page_id, { type: "post", limit: req.query.limit }).then(response => {
-      res.send(response);
-    });
-  }
+  findByPages: (req, res) =>
+    PostsHelper.find({ limit: req.query.limit, pages: req.params.page_id, sort: req.query.sort, w: req.query.w, min_diff: 10 }).then(response => res.send(response)),
+  find: (req, res) => PostsHelper.find({ limit: req.query.limit, when: "today", sort: req.query.sort, w: req.query.w, min_diff: 10 }).then(posts => res.send(posts))
 };

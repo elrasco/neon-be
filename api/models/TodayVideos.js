@@ -12,7 +12,11 @@ module.exports = {
       model: "videos"
     },
     total_count: "integer",
-    diff: "integer"
+    diff: "integer",
+    page: {
+      columnName: "page_id",
+      model: "pages"
+    }
   },
   tableName: "todayVideos",
   autoUpdatedAt: false,

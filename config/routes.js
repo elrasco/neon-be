@@ -45,7 +45,9 @@ module.exports.routes = {
   "GET /api/thirtyDVideos/byPages/:page_id": "ThirtyDVideosController.findByPages",
   "GET /api/thirtyDPosts/byPages/:page_id": "ThirtyDPostsController.findByPages",
   "POST /api/pages/new": "PagesController.addPage",
-  "GET /api/pages/all": "PagesController.all"
+  "GET /api/pages/all": "PagesController.all",
+  "GET /api/predictions/:video_id": "PredictionsController.getByVideoId",
+  "PUT /api/predictions/:video_id": "PredictionsController.predictByVideoId"
 
   /***************************************************************************
   *                                                                          *

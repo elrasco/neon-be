@@ -6,9 +6,7 @@
  */
 
 module.exports = {
-  findByPages: (req, res) => {
-    PostHelper.findPostByPages(req.params.page_id, { when: "30d", limit: req.query.limit }).then(response => {
-      res.send(response);
-    });
-  }
+  findByPages: (req, res) =>
+    VideosHelper.find({ limit: req.query.limit, pages: req.params.page_id, when: "30d", min_diff: 200, sort: req.query.sort, w: req.query.w }).then(videos => res.send(videos)),
+  find: (req, res) => VideosHelper.find({ limit: req.query.limit, when: "30d", min_diff: 200, sort: req.query.sort, w: req.query.w }).then(videos => res.send(videos))
 };
