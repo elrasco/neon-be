@@ -43,7 +43,9 @@ module.exports.routes = {
   "GET /api/sevenDVideos/byPages/:page_id": "SevenDVideosController.findByPages",
   "GET /api/sevenDPosts/byPages/:page_id": "SevenDPostsController.findByPages",
   "GET /api/thirtyDVideos/byPages/:page_id": "ThirtyDVideosController.findByPages",
-  "GET /api/thirtyDPosts/byPages/:page_id": "ThirtyDPostsController.findByPages"
+  "GET /api/thirtyDPosts/byPages/:page_id": "ThirtyDPostsController.findByPages",
+  "POST /api/pages/new": "PagesController.addPage",
+  "GET /api/pages/all": "PagesController.all"
 
   /***************************************************************************
   *                                                                          *
